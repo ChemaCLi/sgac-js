@@ -32,7 +32,6 @@ jobs:
         ssh-keygen -t rsa -b 4096 -C "github-action" -f ~/.ssh/id_rsa -N ""
         echo "SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa)" >> $GITHUB_ENV
         echo "SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" >> $GITHUB_ENV
-
     - name: Add SSH Key to GitHub Secrets
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -40,27 +39,27 @@ jobs:
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.SGAC_SSH_IP }}
-          username: ${{ secrets.SGAC_SSH_USER }}
-          password: ${{ secrets.SGAC_SSH_PASSWORD }}
-          port: 22
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" >> ~/.ssh/authorized_keys
-            whoami
-            cd ~/sgacjs
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.SGAC_DEPLOY_TOKEN }}
-            docker pull ghcr.io/chemacli/sgac-js:latest
-            docker stop sgac-js && docker rm sgac-js
-            docker run -d \
-              --name sgac-js \
-              -p 4321:4321 \
-              -w /app \
-              --restart always \
-              ghcr.io/chemacli/sgac-js:latest
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.SGAC_SSH_IP }}
+        username: ${{ secrets.SGAC_SSH_USER }}
+        password: ${{ secrets.SGAC_SSH_PASSWORD }}
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" >> ~/.ssh/authorized_keys
+          whoami
+          cd ~/sgacjs
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.SGAC_DEPLOY_TOKEN }}
+          docker pull ghcr.io/chemacli/sgac-js:latest
+          docker stop sgac-js && docker rm sgac-js
+          docker run -d \
+            --name sgac-js \
+            -p 4321:4321 \
+            -w /app \
+            --restart always \
+            ghcr.io/chemacli/sgac-js:latest
             
             
             
