@@ -1,3 +1,9 @@
+name: Publish SGAC
+
+on:
+  push:
+    branches: [main]
+
 jobs:
   create-docker-image:
     runs-on: ubuntu-latest
