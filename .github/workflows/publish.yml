@@ -24,7 +24,7 @@ jobs:
           docker push ghcr.io/chemacli/sgac-js:latest
 
   deploy:
-    needs: create-docker-image
+    needs: create-docker-image-on-self-hosted-arm64
     runs-on: ubuntu-latest
     steps:
       - name: Install sshpass
