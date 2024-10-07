@@ -12,10 +12,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.SGAC_DEPLOY_TOKEN }}
       
-    - name: Build the SGAC Docker image
-      run: |
-        docker build -t ghcr.io/ChemaCLi/sgac-js:latest
-        docker push ghcr.io/ChemaCLi/sgac-js:latest
+      - name: Build the SGAC Docker image
+        run: |
+          docker build -t ghcr.io/ChemaCLi/sgac-js:latest
+          docker push ghcr.io/ChemaCLi/sgac-js:latest
 
   deploy:
     needs: create-docker-image
