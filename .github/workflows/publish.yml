@@ -34,7 +34,7 @@ jobs:
         host: ${{ secrets.SGAC_SSH_IP }}
         username: ${{ secrets.SGAC_SSH_USER }}
         password: ${{ secrets.SGAC_SSH_PASSWORD }}
-        port: 22
+        port: 18659
         script: |
           whoami
           cd ~/sgacjs
