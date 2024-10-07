@@ -1,0 +1,41 @@
+jobs:
+  create-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.SGAC_DEPLOY_TOKEN }}
+      
+    - name: Build the SGAC Docker image
+      run: |
+        docker build -t ghcr.io/ChemaCLi/sgac-js:latest
+        docker push ghcr.io/ChemaCLi/sgac-js:latest
+
+  deploy:
+    needs: create-docker-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
+
+      - name: Enter with SSH to the server
+        run: |
+          sshpass -p ${{secrets.SGAC_SSH_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.SGAC_SSH_USER}}@${{secrets.SGAC_SSH_IP}} << EOF
+            cd /root/sgac-js
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.SGAC_DEPLOY_TOKEN }}
+            docker pull ghcr.io/ChemaCLi/sgac-js:latest
+            docker stop sgac-js && docker rm sgac-js
+            docker run -d \
+              --name sgac-js \
+              -p 4321:4321 \
+              -w /app \
+              --restart always \
+              --env-file .env \
+              ghcr.io/ChemaCLi/sgac-js:latest
+          EOF
