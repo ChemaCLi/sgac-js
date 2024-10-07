@@ -34,7 +34,9 @@ jobs:
           username: ${{ secrets.SGAC_SSH_USER }}
           password: ${{ secrets.SGAC_SSH_PASSWORD }}
           port: 22
+          key: ${{ secrets.GITHUB_PUBLIC_KEY }}
           script: |
+            echo "${{ secrets.GITHUB_PUBLIC_KEY }}" >> ~/.ssh/authorized_keys
             whoami
             cd ~/sgacjs
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.SGAC_DEPLOY_TOKEN }}
