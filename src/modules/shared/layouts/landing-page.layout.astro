@@ -1,0 +1,48 @@
+---
+import { getPlatformConfig } from "../../shared/utils/config/get-platform-config";
+const { settings, theme } = await getPlatformConfig();
+---
+<html>
+  <head>
+    <title>{settings.title}</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" href=`${settings.iconUrl}` type="image/x-icon" />
+  </head>
+  <body>
+    <main>
+      <h1>Hola de vuelta</h1>
+      <p>
+        Que bueno tenerte aquí. Por favor inicia sesión para continuar.
+      </p>
+      <a href="/auth/login" class="button">Iniciar sesión</a>
+    </main>
+  </body>
+</html>
+
+<style define:vars={{ textColor: "#900" }}>
+  body {
+    font-family: Arial, sans-serif;
+    color: var(---textColor);
+    background-color: #f0f0f0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  h1 {
+    color: var(---textColor);
+  }
+  p {
+    color: var(---textColor);
+  }
+  .button {
+    color: var(---textColor);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 50px;
+    background-color: #a99bd2;
+    &:hover {
+      background-color: #ba9ec8;
+    }
+  }
+</style>

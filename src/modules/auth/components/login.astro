@@ -1,0 +1,70 @@
+<form
+  data-signin-form
+  style="display: flex; flex-direction: column; gap: 1rem; width: 300px; margin: auto;">
+  <label>
+    Usuario:
+    <input type="text" name="username" required />
+  </label>
+
+  <label>
+    Contraseña:
+    <input type="password" name="password" required />
+  </label>
+
+  <label>
+    <input type="checkbox" name="rememberMe" />
+    Mantener mi sesión abierta
+  </label>
+
+  <button type="submit" data-sigin-button>
+    Iniciar sesión
+  </button>
+
+  <a href="/forgot-password">Olvidé mi contraseña</a>
+  <a href="/privacy-policy">Acuerdos de privacidad</a>
+</form>
+
+
+<script>
+  const signinButton = document.querySelector('[data-sigin-button]');
+  const signinForm = document.querySelector('[data-signin-form]');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Deshabilitar los botones mientras verificamos credenciales
+    const form = event.target;
+    const formData = new FormData(form);
+    const payload = {
+      username: formData.get('username'),
+      password: formData.get('password'),
+      rememberMe: formData.get('rememberMe') === 'on'
+    };
+
+    try {
+      signinButton.setAttribute('disabled', 'true');
+      signinButton.textContent = 'Iniciando sesión...';
+
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la autenticación');
+      }
+
+      const data = await response.json();
+      // Puedes redirigir a otra página si es necesario
+      console.log('Inicio de sesión exitoso', data);
+    } catch (error) {
+      console.error('Error al iniciar sesión', error);
+    } finally {
+      signinButton.removeAttribute('disabled');
+      signinButton.textContent = 'Iniciar sesión';
+    }
+  };
+
+  signinForm.addEventListener('submit', handleSubmit);
+</script>

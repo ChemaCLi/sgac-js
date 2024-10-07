@@ -1,0 +1,16 @@
+---
+import Sidebar from "../components/sidebar"
+---
+
+<html lang="en">
+  <head>
+    <title>Main Layout</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body class="h-screen grid grid-cols-[auto,1fr]">
+    <Sidebar userSession={{}} client:only />
+    <main class="p-6">
+      <slot />
+    </main>
+  </body>
+</html>

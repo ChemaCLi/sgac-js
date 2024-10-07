@@ -1,0 +1,39 @@
+---
+import { getPlatformConfig } from "../../shared/utils/config/get-platform-config";
+
+const { settings } = await getPlatformConfig();
+
+---
+
+<html>
+  <head>
+    <title>${settings.title}</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href=`${settings.iconUrl}` type="image/x-icon">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: ${theme.backgroundColor};
+        color: ${theme.textColor};
+      }
+      h1 {
+        color: ${theme.titleColor};
+      }
+      p {
+        color: ${theme.paragraphColor};
+      }
+      .button {
+        background-color: ${theme.buttonBackgroundColor};
+        color: ${theme.buttonTextColor};
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to Our Platform</h1>
+    <p>We are glad to have you here. Please log in to continue.</p>
+    <a href="/auth/login" class="button">Login</a>
+  </body>
+</html>
