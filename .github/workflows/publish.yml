@@ -33,15 +33,14 @@ jobs:
       - name: Enter with SSH to the server
         run: |
           sshpass -p ${{secrets.SGAC_SSH_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.SGAC_SSH_USER}}@${{secrets.SGAC_SSH_IP}} << EOF
-            cd /root/sgac-js
+            cd ~/sgacjs
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.SGAC_DEPLOY_TOKEN }}
-            docker pull ghcr.io/ChemaCLi/sgac-js:latest
+            docker pull ghcr.io/chemacli/sgac-js:latest
             docker stop sgac-js && docker rm sgac-js
             docker run -d \
               --name sgac-js \
               -p 4321:4321 \
               -w /app \
               --restart always \
-              --env-file .env \
-              ghcr.io/ChemaCLi/sgac-js:latest
+              ghcr.io/chemacli/sgac-js:latest
           EOF
