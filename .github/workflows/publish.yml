@@ -28,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate SSH key
-        run: |
-          ssh-keygen -t rsa -b 4096 -C "github-action" -f ~/.ssh/id_rsa -N ""
-          echo "SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa)" >> $GITHUB_ENV
-          echo "SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" >> $GITHUB_ENV
+      run: |
+        ssh-keygen -t rsa -b 4096 -C "github-action" -f ~/.ssh/id_rsa -N ""
+        echo "SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa)" >> $GITHUB_ENV
+        echo "SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" >> $GITHUB_ENV
 
     - name: Add SSH Key to GitHub Secrets
       env:
