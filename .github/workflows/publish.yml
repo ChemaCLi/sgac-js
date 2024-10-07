@@ -27,12 +27,15 @@ jobs:
     needs: create-docker-image-on-self-hosted-arm64
     runs-on: ubuntu-latest
     steps:
-      - name: Install sshpass
-        run: sudo apt-get install sshpass
-
-      - name: Enter with SSH to the server
-        run: |
-          sshpass -p ${{secrets.SGAC_SSH_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.SGAC_SSH_USER}}@${{secrets.SGAC_SSH_IP}} << EOF
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SGAC_SSH_IP }}
+          username: ${{ secrets.SGAC_SSH_USER }}
+          password: ${{ secrets.SGAC_SSH_PASSWORD }}
+          port: 22
+          script: |
+            whoami
             cd ~/sgacjs
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.SGAC_DEPLOY_TOKEN }}
             docker pull ghcr.io/chemacli/sgac-js:latest
@@ -43,4 +46,8 @@ jobs:
               -w /app \
               --restart always \
               ghcr.io/chemacli/sgac-js:latest
-          EOF
+            
+            
+            
+            
+      
