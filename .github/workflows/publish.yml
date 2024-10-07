@@ -5,8 +5,8 @@ on:
     branches: [main]
 
 jobs:
-  create-docker-image:
-    runs-on: ubuntu-latest
+  create-docker-image-on-self-hosted-arm64:
+    runs-on: self-hosted
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
