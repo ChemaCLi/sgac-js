@@ -20,8 +20,8 @@ jobs:
       
       - name: Build the SGAC Docker image
         run: |
-          docker build . -t ghcr.io/ChemaCLi/sgac-js:latest
-          docker push ghcr.io/ChemaCLi/sgac-js:latest
+          docker build . -t ghcr.io/chemacli/sgac-js:latest
+          docker push ghcr.io/chemacli/sgac-js:latest
 
   deploy:
     needs: create-docker-image
